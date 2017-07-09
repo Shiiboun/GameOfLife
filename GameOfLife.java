@@ -16,15 +16,16 @@ import javafx.stage.Stage;
 public class GameOfLife extends Application {
 	int marken = 25;
 	int locMarken = marken;
+	final int felder = 10;
+	//int hatNachbarn = 0;
+	boolean aktGen[][] = new boolean[felder][felder];
+	boolean nxtGen[][] = new boolean[felder][felder];
 	public static void main(String args[]) {
 		launch(args);
 	}
 
 	public void start(Stage st) {
-		final int felder = 10;
-		int hatNachbarn = 0;
-		boolean aktGen[][] = new boolean[felder][felder];
-		boolean nxtGen[][] = new boolean[felder][felder];
+		
 		BorderPane bp = new BorderPane();
 		GridPane grid = new GridPane();
 		Scene sz = new Scene(bp);
@@ -50,24 +51,15 @@ public class GameOfLife extends Application {
 			locMarken = marken;
 		});
 		next.setOnAction((e) -> {
-			ausgabe(felder, aktGen, nxtGen, hatNachbarn, r);
+			aktGen=ausgabe(felder, aktGen, nxtGen, r);
+			
+			
 		});
 		exit.setOnAction((e) -> {
 			st.close();
 		});
 		st.setScene(sz);
 		st.show();
-
-		/*int count = 0;
-		for (int i = 0; i < felder; i++) {
-			for (int j = 0; j < felder; j++) {
-				System.out.println("Checktrue " + i + " " + j + " " + b[i][j]);
-				if (b[i][j]) {
-					count++;
-				}
-			}
-		}
-		System.out.println(count);*/
 
 	}
 
@@ -94,34 +86,35 @@ public class GameOfLife extends Application {
 		return marken;		
 	}
 
-	private void ausgabe(int felder, boolean aktGen[][], boolean nxtGen[][], int hatNachbarn, Rectangle r[][]) {
+	private boolean[][] ausgabe(int felder, boolean aktGen[][], boolean nxtGen[][], Rectangle r[][]) {
 		for (int spalte = 0; spalte < felder; spalte++) {
 			for (int reihe = 0; reihe < felder; reihe++) {
+				int hatNachbarn = 0;
 				nxtGen[spalte][reihe] = aktGen[spalte][reihe];
 				//Ränder auslassen
 				if ((spalte > 0) && (reihe > 0) && (spalte < felder - 1) && (reihe < felder - 1)) {
 					if (nxtGen[spalte - 1][reihe] == true) {
 						hatNachbarn++;
 					}
-					else if (nxtGen[spalte - 1][reihe + 1] == true) {
+					if (nxtGen[spalte - 1][reihe + 1] == true) {
 						hatNachbarn++;
 					}
-					else if (nxtGen[spalte - 1][reihe - 1] == true) {
+					if (nxtGen[spalte - 1][reihe - 1] == true) {
 						hatNachbarn++;
 					}
-					else if (nxtGen[spalte + 1][reihe] == true) {
+					if (nxtGen[spalte + 1][reihe] == true) {
 						hatNachbarn++;
 					}
-					else if (nxtGen[spalte + 1][reihe + 1] == true) {
+					if (nxtGen[spalte + 1][reihe + 1] == true) {
 						hatNachbarn++;
 					}
-					else if (nxtGen[spalte + 1][reihe - 1] == true) {
+					if (nxtGen[spalte + 1][reihe - 1] == true) {
 						hatNachbarn++;
 					}
-					else if (nxtGen[spalte][reihe - 1] == true) {
+					if (nxtGen[spalte][reihe - 1] == true) {
 						hatNachbarn++;
 					}
-					else if (nxtGen[spalte][reihe + 1] == true) {
+					if (nxtGen[spalte][reihe + 1] == true) {
 						hatNachbarn++;
 					}
 				}
@@ -132,10 +125,10 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte + 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe + 1] == true) {
+						if (nxtGen[spalte + 1][reihe + 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte][reihe + 1] == true) {
+						if (nxtGen[spalte][reihe + 1] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -144,10 +137,10 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte][reihe -1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe - 1] == true) {
+						if (nxtGen[spalte + 1][reihe - 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe] == true) {
+						if (nxtGen[spalte + 1][reihe] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -156,16 +149,16 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte][reihe - 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte][reihe + 1] == true) {
+						if (nxtGen[spalte][reihe + 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe] == true) {
+						if (nxtGen[spalte + 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe- 1] == true) {
+						if (nxtGen[spalte + 1][reihe- 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe + 1] == true) {
+						if (nxtGen[spalte + 1][reihe + 1] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -177,10 +170,10 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte - 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe + 1] == true) {
+						if (nxtGen[spalte - 1][reihe + 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte][reihe + 1] == true) {
+						if (nxtGen[spalte][reihe + 1] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -189,10 +182,10 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte - 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe - 1] == true) {
+						if (nxtGen[spalte - 1][reihe - 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte][reihe - 1] == true) {
+						if (nxtGen[spalte][reihe - 1] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -201,16 +194,16 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte][reihe - 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte][reihe + 1] == true) {
+						if (nxtGen[spalte][reihe + 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe] == true) {
+						if (nxtGen[spalte - 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe- 1] == true) {
+						if (nxtGen[spalte - 1][reihe- 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe + 1] == true) {
+						if (nxtGen[spalte - 1][reihe + 1] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -221,16 +214,16 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte][reihe + 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte  + 1][reihe] == true) {
+						if (nxtGen[spalte  + 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe] == true) {
+						if (nxtGen[spalte - 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe + 1] == true) {
+						if (nxtGen[spalte - 1][reihe + 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe + 1] == true) {
+						if (nxtGen[spalte + 1][reihe + 1] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -241,16 +234,16 @@ public class GameOfLife extends Application {
 						if (nxtGen[spalte][reihe - 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte  + 1][reihe] == true) {
+						if (nxtGen[spalte  + 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe] == true) {
+						if (nxtGen[spalte - 1][reihe] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte - 1][reihe - 1] == true) {
+						if (nxtGen[spalte - 1][reihe - 1] == true) {
 							hatNachbarn++;
 						}
-						else if (nxtGen[spalte + 1][reihe - 1] == true) {
+						if (nxtGen[spalte + 1][reihe - 1] == true) {
 							hatNachbarn++;
 						}
 					}
@@ -262,17 +255,19 @@ public class GameOfLife extends Application {
 					r[spalte][reihe].setFill(Color.BEIGE);
 				}
 				// Überprüfen ob überlebt
-				else if ((hatNachbarn == 2) || (hatNachbarn == 3)) {
+				if ((hatNachbarn == 2) || (hatNachbarn == 3)) {
 					if (nxtGen[spalte][reihe] == true){
 						System.out.println(spalte + " " + reihe + " hat überlebt");
 					}
 				}
 				// Überprüfen ob geburt
-				else if (hatNachbarn == 3) {
+				if (hatNachbarn == 3) {
 					System.out.println(spalte + " " + reihe + "   wurde geboren");
 					r[spalte][reihe].setFill(Color.BLUE);
+					nxtGen[spalte][reihe] = true;
 				}
 			}
 		}
+		return nxtGen;
 	}
 }
