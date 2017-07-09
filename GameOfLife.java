@@ -1,33 +1,75 @@
 package application;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class GameOfLife extends Application {
+	int marken = 25;
+	int locMarken = marken;
 	public static void main(String args[]) {
 		launch(args);
 	}
 
 	public void start(Stage st) {
-		final int felder = 8;
-		int marken = 25;
+		final int felder = 10;
 		int hatNachbarn = 0;
 		boolean aktGen[][] = new boolean[felder][felder];
 		boolean nxtGen[][] = new boolean[felder][felder];
 		BorderPane bp = new BorderPane();
 		GridPane grid = new GridPane();
-		Scene sz = new Scene(bp, 500, 500);
+		Scene sz = new Scene(bp);
 		Rectangle r[][] = new Rectangle[felder][felder];
+		Button next = new Button("Next");
+		Button exit = new Button("Exit");
+		Button start = new Button("Start");
+		HBox btn = new HBox(4.0, start, next, exit);
 		bp.setCenter(grid);
-		// Verteilen der Marken + Spielfeld anlegen
+		bp.setBottom(btn);
+		//Spielfeld anlegen
+		for (int i = 0; i < felder; i++) {
+			for (int j = 0; j < felder; j++) {
+				r[i][j] = new Rectangle(30, 30, Color.BEIGE);
+				r[i][j].setStroke(Color.BLACK);
+				grid.add(r[i][j], i, j);
+			}
+		}
+		
+		start.setOnAction((e) -> {
+			locMarken = init(locMarken, felder, r, grid, aktGen);
+			locMarken = marken;
+		});
+		next.setOnAction((e) -> {
+			ausgabe(felder, aktGen, nxtGen, hatNachbarn, r);
+		});
+		exit.setOnAction((e) -> {
+			st.close();
+		});
+		st.setScene(sz);
+		st.show();
+
+		/*int count = 0;
+		for (int i = 0; i < felder; i++) {
+			for (int j = 0; j < felder; j++) {
+				System.out.println("Checktrue " + i + " " + j + " " + b[i][j]);
+				if (b[i][j]) {
+					count++;
+				}
+			}
+		}
+		System.out.println(count);*/
+
+	}
+
+	private int init(int marken, int felder, Rectangle[][] r, GridPane grid, boolean[][] aktGen) {
 		while (marken > 0) {
 			Random rnd = new Random();
 			for (int i = 0; i < felder; i++) {
@@ -47,26 +89,10 @@ public class GameOfLife extends Application {
 				}
 			}
 		} // Ende while
-			// Checken ob es Nachbarn gibt
-		pruefeNachbar(felder, aktGen, nxtGen, hatNachbarn, r);
-		
-		st.setScene(sz);
-		st.show();
-
-		/*int count = 0;
-		for (int i = 0; i < felder; i++) {
-			for (int j = 0; j < felder; j++) {
-				System.out.println("Checktrue " + i + " " + j + " " + b[i][j]);
-				if (b[i][j]) {
-					count++;
-				}
-			}
-		}
-		System.out.println(count);*/
-
+		return marken;		
 	}
 
-	private void pruefeNachbar(int felder, boolean aktGen[][], boolean nxtGen[][], int hatNachbarn, Rectangle r[][]) {
+	private void ausgabe(int felder, boolean aktGen[][], boolean nxtGen[][], int hatNachbarn, Rectangle r[][]) {
 		for (int spalte = 0; spalte < felder; spalte++) {
 			for (int reihe = 0; reihe < felder; reihe++) {
 				nxtGen[spalte][reihe] = aktGen[spalte][reihe];
