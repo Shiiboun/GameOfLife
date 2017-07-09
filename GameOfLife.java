@@ -3,6 +3,7 @@ package application;
 import java.util.Random;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -32,6 +33,7 @@ public class GameOfLife extends Application {
 		Button exit = new Button("Exit");
 		Button start = new Button("Start");
 		HBox btn = new HBox(4.0, start, next, exit);
+		btn.setAlignment(Pos.BOTTOM_CENTER);
 		bp.setCenter(grid);
 		bp.setBottom(btn);
 		//Spielfeld anlegen
