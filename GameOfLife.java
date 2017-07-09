@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -18,6 +19,7 @@ public class GameOfLife extends Application {
 	int locMarken = marken;
 	final int felder = 10;
 	//int hatNachbarn = 0;
+	int gen = 0;
 	boolean aktGen[][] = new boolean[felder][felder];
 	boolean nxtGen[][] = new boolean[felder][felder];
 	public static void main(String args[]) {
@@ -33,7 +35,8 @@ public class GameOfLife extends Application {
 		Button next = new Button("Next");
 		Button exit = new Button("Exit");
 		Button start = new Button("Start");
-		HBox btn = new HBox(4.0, start, next, exit);
+		Label l = new Label("Generation " + gen);
+		HBox btn = new HBox(4.0, start, next, exit, l);
 		btn.setAlignment(Pos.BOTTOM_CENTER);
 		bp.setCenter(grid);
 		bp.setBottom(btn);
@@ -49,15 +52,18 @@ public class GameOfLife extends Application {
 		start.setOnAction((e) -> {
 			locMarken = init(locMarken, felder, r, grid, aktGen);
 			locMarken = marken;
+			gen = 1;
+			l.setText("Generation "+ gen);
 		});
 		next.setOnAction((e) -> {
 			aktGen=ausgabe(felder, aktGen, nxtGen, r);
-			
-			
+			gen++;
+			l.setText("Generation "+ gen);			
 		});
 		exit.setOnAction((e) -> {
 			st.close();
 		});
+		st.setResizable(false);
 		st.setScene(sz);
 		st.show();
 
@@ -263,7 +269,7 @@ public class GameOfLife extends Application {
 				// Überprüfen ob geburt
 				if (hatNachbarn == 3) {
 					System.out.println(spalte + " " + reihe + "   wurde geboren");
-					r[spalte][reihe].setFill(Color.BLUE);
+					r[spalte][reihe].setFill(Color.RED);
 					nxtGen[spalte][reihe] = true;
 				}
 			}
